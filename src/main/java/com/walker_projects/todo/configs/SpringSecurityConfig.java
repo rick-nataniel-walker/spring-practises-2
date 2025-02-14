@@ -37,11 +37,11 @@ public class SpringSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests((auth) -> {
-//                auth.requestMatchers(HttpMethod.POST, urlPatterns).hasRole(this.admin);
-//                auth.requestMatchers(HttpMethod.PUT, urlPatterns).hasRole(this.admin);
-//                auth.requestMatchers(HttpMethod.DELETE, urlPatterns).hasRole(this.admin);
-//                auth.requestMatchers(HttpMethod.PATCH, urlPatterns).hasAnyRole(this.admin, this.user);
-//                auth.requestMatchers(HttpMethod.GET, urlPatterns).permitAll();
+                auth.requestMatchers(HttpMethod.POST, urlPatterns).hasRole(this.admin);
+                auth.requestMatchers(HttpMethod.PUT, urlPatterns).hasRole(this.admin);
+                auth.requestMatchers(HttpMethod.DELETE, urlPatterns).hasRole(this.admin);
+                auth.requestMatchers(HttpMethod.PATCH, urlPatterns).hasAnyRole(this.admin, this.user);
+                auth.requestMatchers(HttpMethod.GET, urlPatterns).permitAll();
                 auth.anyRequest().authenticated();
             })
             .httpBasic(Customizer.withDefaults());
@@ -53,21 +53,21 @@ public class SpringSecurityConfig {
         return configuration.getAuthenticationManager();
     }
     
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        
-//        UserDetails walker = User.builder()
-//            .username("walker")
-//            .password(passwordEncoder().encode("12w34567"))
-//            .roles("USER")
-//            .build();
-//        
-//        UserDetails admin = User.builder()
-//            .username("admin")
-//            .password(passwordEncoder().encode("Admin"))
-//            .roles("ADMIN")
-//            .build();
-//        
-//        return new InMemoryUserDetailsManager(walker, admin);
-//    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        
+        UserDetails walker = User.builder()
+            .username("walker")
+            .password(passwordEncoder().encode("12w34567"))
+            .roles("USER")
+            .build();
+        
+        UserDetails admin = User.builder()
+            .username("admin")
+            .password(passwordEncoder().encode("Admin"))
+            .roles("ADMIN")
+            .build();
+        
+        return new InMemoryUserDetailsManager(walker, admin);
+    }
 }
