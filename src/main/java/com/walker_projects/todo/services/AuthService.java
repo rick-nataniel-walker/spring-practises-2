@@ -4,12 +4,14 @@
  */
 package com.walker_projects.todo.services;
 
-import com.walker_projects.todo.dtos.UserDto;
+import com.walker_projects.todo.dtos.LoginDto;
+import com.walker_projects.todo.dtos.RegisterDto;
 
 /**
  *
  * @author ncossa
  */
-public interface UserService {
-    public UserDto createUser(UserDto userDto);
+public interface AuthService {
+    public RegisterDto register(RegisterDto userDto);
+    public String login(LoginDto loginDto);
 }

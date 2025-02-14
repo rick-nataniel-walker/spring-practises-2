@@ -4,7 +4,7 @@
  */
 package com.walker_projects.todo.mappers;
 
-import com.walker_projects.todo.dtos.UserDto;
+import com.walker_projects.todo.dtos.RegisterDto;
 import com.walker_projects.todo.entities.User;
 
 /**
@@ -12,8 +12,8 @@ import com.walker_projects.todo.entities.User;
  * @author ncossa
  */
 public class UserMapper {
-    public static UserDto mapToDto(User user) {
-        return new UserDto(
+    public static RegisterDto mapToDto(User user) {
+        return new RegisterDto(
             user.getId(),
             user.getName(),
             user.getUsername(),
@@ -22,7 +22,7 @@ public class UserMapper {
         );
     }
     
-    public static User mapToUser(UserDto userDto) {
+    public static User mapToUser(RegisterDto userDto) {
         return new User(
             userDto.getId(),
             userDto.getName(),
