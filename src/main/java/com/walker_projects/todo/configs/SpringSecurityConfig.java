@@ -12,21 +12,22 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import lombok.AllArgsConstructor;
 
 /**
  *
  * @author ncossa
  */
 @Configuration
+@AllArgsConstructor
 @EnableMethodSecurity
 public class SpringSecurityConfig {
+    
+    private UserDetailsService userDetailsService;
     
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,11 +38,6 @@ public class SpringSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests((auth) -> {
-                auth.requestMatchers(HttpMethod.POST, urlPatterns).hasRole(this.admin);
-                auth.requestMatchers(HttpMethod.PUT, urlPatterns).hasRole(this.admin);
-                auth.requestMatchers(HttpMethod.DELETE, urlPatterns).hasRole(this.admin);
-                auth.requestMatchers(HttpMethod.PATCH, urlPatterns).hasAnyRole(this.admin, this.user);
-                auth.requestMatchers(HttpMethod.GET, urlPatterns).permitAll();
                 auth.anyRequest().authenticated();
             })
             .httpBasic(Customizer.withDefaults());
@@ -52,22 +48,5 @@ public class SpringSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-    
-    @Bean
-    public UserDetailsService userDetailsService() {
-        
-        UserDetails walker = User.builder()
-            .username("walker")
-            .password(passwordEncoder().encode("12w34567"))
-            .roles("USER")
-            .build();
-        
-        UserDetails admin = User.builder()
-            .username("admin")
-            .password(passwordEncoder().encode("Admin"))
-            .roles("ADMIN")
-            .build();
-        
-        return new InMemoryUserDetailsManager(walker, admin);
-    }
+  
 }
